@@ -3,47 +3,48 @@ import {useCurrentFrame, useVideoConfig} from 'remotion';
 import type {GifLoopBehavior} from './props';
 
 export function useCurrentGifIndex(
-	delays: number[],
-	loopBehavior: GifLoopBehavior,
+\tdelays: number[],
+\tloopBehavior: GifLoopBehavior,
+\tplayBackRate: number,
 ): number {
-	const currentFrame = useCurrentFrame();
-	const videoConfig = useVideoConfig();
+\tconst currentFrame = useCurrentFrame();
+\tconst videoConfig = useVideoConfig();
 
-	const duration = useMemo(() => {
-		if (delays.length !== 0) {
-			return delays.reduce(
-				(sum: number, delay: number) => sum + (delay ?? 0),
-				0,
-			);
-		}
+\tconst duration = useMemo(() => {
+\t\tif (delays.length !== 0) {
+\t\t\treturn delays.reduce(
+\t\t\t\t(sum: number, delay: number) => sum + (delay ?? 0),
+\t\t\t\t0,
+\t\t\t);
+\t\t}
 
-		return 1;
-	}, [delays]);
+\t\treturn 1;
+\t}, [delays]);
 
-	if (delays.length === 0) {
-		return 0;
-	}
+\tif (delays.length === 0) {
+\t\treturn 0;
+\t}
 
-	const time = (currentFrame / videoConfig.fps) * 1000;
+\tconst time = ((currentFrame / videoConfig.fps) * 1000) / playBackRate;
 
-	if (loopBehavior === 'pause-after-finish' && time >= duration) {
-		return delays.length - 1;
-	}
+\tif (loopBehavior === 'pause-after-finish' && time >= duration) {
+\t\treturn delays.length - 1;
+\t}
 
-	if (loopBehavior === 'unmount-after-finish' && time >= duration) {
-		return -1;
-	}
+\tif (loopBehavior === 'unmount-after-finish' && time >= duration) {
+\t\treturn -1;
+\t}
 
-	let currentTime = time % duration;
+\tlet currentTime = time % duration;
 
-	for (let i = 0; i < delays.length; i++) {
-		const delay = delays[i];
-		if (currentTime < delay) {
-			return i;
-		}
+\tfor (let i = 0; i < delays.length; i++) {
+\t\tconst delay = delays[i];
+\t\tif (currentTime < delay) {
+\t\t\treturn i;
+\t\t}
 
-		currentTime -= delay;
-	}
+\t\tcurrentTime -= delay;
+\t}
 
-	return 0;
+\treturn 0;
 }
