@@ -71,6 +71,10 @@ The looping behavior of the GIF. Can be one of these values:
 - `'pause-after-finish'`: The GIF will play once and then show the last frame.
 - `'unmount-after-finish'`: The GIF will play once and then unmount. Note that if you attach a `ref`, it will become `null` after the GIF has finished playing.
 
+### `playBackRate`
+
+This prop allows you to control the speed of the GIF. A value greater than 1 will make the GIF play faster, while a value less than 1 will make it play slower. Default value is 1.
+
 ### `ref`<AvailableFrom v="3.3.88" />
 
 You can add a [React ref](https://react.dev/learn/manipulating-the-dom-with-refs) to `<Gif>`. If you use TypeScript, you need to type it with `HTMLCanvasElement`.
@@ -94,6 +98,7 @@ export const MyComponent: React.FC = () => {
       width={width}
       height={height}
       fit="fill"
+      playBackRate={2}
     />
   );
 };
