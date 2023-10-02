@@ -5,7 +5,7 @@ import type {GifLoopBehavior} from './props';
 export function useCurrentGifIndex(
     delays: number[],
     loopBehavior: GifLoopBehavior,
-    playBackRate: number,
+    playBackRate: number = 1,
 ): number {
     const currentFrame = useCurrentFrame();
     const videoConfig = useVideoConfig();
